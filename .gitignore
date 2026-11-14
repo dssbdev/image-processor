@@ -1,0 +1,24 @@
+# Yours, never committed: settings, looks and export presets
+config/
+
+# Private notes and design documents
+docs/
+
+# Runtime: cache, job history, default archive and export folders
+data/
+
+# Dependencies and build output
+node_modules/
+web/dist/
+
+# Local tooling, scratch and backups
+.claude/
+.backup/
+scratch/
+.env
+.env.*
+*.log
+
+# OS
+.DS_Store
+Thumbs.db

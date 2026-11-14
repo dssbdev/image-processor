@@ -1,0 +1,195 @@
+@import "tailwindcss";
+
+/* The one dark theme. One canvas shared by the rail and the page, content on floating cards (shadow, no border),
+   one green accent for "you are here", status as a tone, weight up to medium.
+   Every colour, size and radius the components use is a token here; utilities come from the tokens:
+   bg-canvas, bg-card, bg-fill-1, text-ink-0, text-small, ring-edge, rounded-card … */
+@theme {
+  /* surfaces, darkest to lightest */
+  --color-canvas: #161615;
+  --color-card: #1f1f1e;
+  --color-popover: #262625;
+  --color-track: #2a2a28;
+
+  /* translucent white on any surface: a resting control, its hover, a selected segment */
+  --color-fill-1: rgb(255 255 255 / 0.04);
+  --color-fill-2: rgb(255 255 255 / 0.07);
+  --color-fill-3: rgb(255 255 255 / 0.11);
+
+  /* translucent black: a label over a photo, the well a photo sits in */
+  --color-scrim: rgb(0 0 0 / 0.62);
+  --color-shade: rgb(0 0 0 / 0.3);
+
+  /* hairlines */
+  --color-line: rgb(255 255 255 / 0.07);
+  --color-edge: rgb(255 255 255 / 0.13);
+
+  /* text, strongest to faintest */
+  --color-ink-0: #edece9;
+  --color-ink-1: #c4c3be;
+  --color-ink-2: #9a9994;
+  --color-ink-3: #6f6e69;
+
+  --color-brand: #7dd56f;
+  --color-brand-ink: #12290c;
+
+  /* status: the only other colours */
+  --color-good: #8adb7e;
+  --color-bad: #f4908a;
+  --color-warn: #f0b35c;
+  --color-info: #94b3f8;
+  --color-look: #bba6f4;
+  --color-neutral: #aeada8;
+
+  --color-thumb: #f4f3f0;
+
+  --font-sans: "Segoe UI Variable Text", "Segoe UI", Inter, system-ui, sans-serif;
+  --font-display: "Segoe UI Variable Display", "Segoe UI Variable Text", "Segoe UI", Inter, system-ui, sans-serif;
+
+  /* the type scale: seven steps, nothing in between */
+  --text-micro: 11px;
+  --text-caption: 12px;
+  --text-small: 12.5px;
+  --text-body: 13.5px;
+  --text-lead: 14.5px;
+  --text-title: 15.5px;
+  --text-heading: 22px;
+
+  --radius-chip: 5px;
+  --radius-control: 10px;
+  --radius-hero: 18px;
+  --radius-card: 20px;
+
+  --shadow-card: 0 0 0 1px rgb(255 255 255 / 0.05), 0 12px 24px -16px rgb(0 0 0 / 0.7);
+  --shadow-raised: 0 1px 2px rgb(0 0 0 / 0.5), 0 0 0 0.5px rgb(255 255 255 / 0.06);
+  --shadow-pop: 0 0 0 1px rgb(255 255 255 / 0.07), 0 24px 64px -20px rgb(0 0 0 / 0.8);
+}
+
+:root {
+  color-scheme: dark;
+  --scrollbar-thumb: rgb(255 255 255 / 0.12);
+  --scrollbar-thumb-hover: rgb(255 255 255 / 0.22);
+  --thumb-shadow: 0 0 0 1px rgb(0 0 0 / 0.4), 0 2px 6px rgb(0 0 0 / 0.5);
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-ink-1);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- tones: the only status colours. `tone-*` is a tinted background with text in the tone (badges, icon
+   tiles, heroes); `solid-*` is the tone itself (bars, dots). Each tone is one variable. ---------------------- */
+.tone-green, .solid-green { --tone: var(--color-good); }
+.tone-red, .solid-red { --tone: var(--color-bad); }
+.tone-amber, .solid-amber { --tone: var(--color-warn); }
+.tone-blue, .solid-blue { --tone: var(--color-info); }
+.tone-violet, .solid-violet { --tone: var(--color-look); }
+.tone-gray, .solid-gray { --tone: var(--color-neutral); }
+
+.tone-green, .tone-red, .tone-amber, .tone-blue, .tone-violet, .tone-gray {
+  background: color-mix(in srgb, var(--tone) var(--tone-tint, 16%), transparent);
+  color: var(--tone);
+}
+.tone-gray { --tone-tint: 10%; }
+
+.solid-green, .solid-red, .solid-amber, .solid-blue, .solid-violet, .solid-gray {
+  background: var(--tone);
+}
+
+/* ---- rail: full width with labels, icons only below 1440 px (the photo panes need the width) ----- */
+.rail { width: 212px; }
+@media (max-width: 1439px) {
+  .rail { width: 68px; }
+  .rail .rail-label, .rail .rail-studio { display: none; }
+  .rail .rail-item { justify-content: center; }
+}
+
+/* ---- range inputs ------------------------------------------------------------------------------- */
+input[type="range"].slider,
+input[type="range"].plain {
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 9999px;
+  background: var(--color-thumb);
+}
+input[type="range"]::-moz-range-thumb {
+  border: 0;
+  border-radius: 9999px;
+  background: var(--color-thumb);
+}
+
+/* .slider: transparent track (the Slider component draws its own), a thumb with a shadow */
+input[type="range"].slider {
+  background: transparent;
+  height: 16px;
+  margin: 0;
+}
+input[type="range"].slider::-webkit-slider-runnable-track { background: transparent; height: 16px; }
+input[type="range"].slider::-moz-range-track { background: transparent; height: 16px; }
+input[type="range"].slider::-webkit-slider-thumb { width: 14px; height: 14px; margin-top: 1px; box-shadow: var(--thumb-shadow); }
+input[type="range"].slider::-moz-range-thumb { width: 14px; height: 14px; box-shadow: var(--thumb-shadow); }
+
+/* .plain: a thin visible track (zoom, compare) */
+input[type="range"].plain {
+  height: 4px;
+  border-radius: 9999px;
+  background: var(--color-track);
+}
+input[type="range"].plain::-webkit-slider-thumb { width: 12px; height: 12px; }
+input[type="range"].plain::-moz-range-thumb { width: 12px; height: 12px; }
+
+/* Number inputs: no spin buttons, they look foreign here */
+input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+/* ---- scrollbars: dark everywhere; .scroll-thin is the narrower one inside panels ------------------- */
+* { scrollbar-width: thin; scrollbar-color: var(--scrollbar-thumb) transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 9999px; border: 2px solid transparent; background-clip: content-box; }
+::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); background-clip: content-box; }
+
+.scroll-thin::-webkit-scrollbar { width: 8px; height: 8px; }
+.scroll-thin::-webkit-scrollbar-thumb { border: 0; background-clip: border-box; }
+
+/* ---- the neutral well behind a photo: colour never sits next to the picture it is judging --------- */
+.checker {
+  --checker-dark: #121211;
+  --checker-light: #181817;
+  background-color: var(--checker-dark);
+  background-image:
+    linear-gradient(45deg, var(--checker-light) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--checker-light) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--checker-light) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--checker-light) 75%);
+  background-size: 18px 18px;
+  background-position: 0 0, 0 9px, 9px -9px, -9px 0;
+}
+
+/* ---- motion ------------------------------------------------------------------------------------- */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-up { animation: fade-up 180ms ease-out; }
+
+@keyframes pop {
+  from { opacity: 0; transform: translateY(-4px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.animate-pop { animation: pop 120ms ease-out; transform-origin: top; }
