@@ -2,6 +2,7 @@
   "name": "image-processor",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "description": "Local photo pipeline: looks, crops, WYSIWYG preview, batch export, card import.",
   "type": "module",
   "engines": {

@@ -128,3 +128,7 @@ Where things are shared rather than repeated:
 - The crop can be moved, not resized (the window is always the largest one of the chosen ratio).
 - HEIC decoding is 8-bit SDR via wasm, not an HDR workflow.
 - Strong shadow lifts on 8-bit JPGs will band; that is what the DNG route is for.
+
+## License
+
+[MIT](LICENSE)
